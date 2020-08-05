@@ -3,5 +3,5 @@ Questa dispensa cerca di racchiundere tutto ciò che pùo serviere ad uno studen
 
 Questa è ancora una bozza non completa, molte cose vanno ancora sistemate, ad esempio la bibliografia.
 
-## Modificheci 
+## Modifiche 
 Siete invitati a segnalare qualsiasi tipo di errore, mancanza o incorrettezza. Come detto è una bozza e ci saranno sicuramente tanti errori. 
