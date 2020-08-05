@@ -1,0 +1,1316 @@
+\documentclass[12pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[italian]{babel}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{latexsym}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{etoolbox}
+
+
+\newenvironment{sistema}% 
+{\left\lbrace\begin{array}{@{}l@{}}}% 
+{\end{array}\right.} 
+
+\newcounter{theoremcounter}%[chapter]
+\newenvironment{theorem}[2]
+[TEOREMA \thesection.\thetheoremcounter]{
+\refstepcounter{theoremcounter}
+\begin {trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2}]
+\end {trivlist}}
+
+\newcounter{propositioncounter}
+\newenvironment{proposition}[2]
+[PROPOSIZIONE \thesection.\thepropositioncounter] { \refstepcounter{prepositioncounter}\begin {trivlist}
+\item[\hskip \labelsep {\bfseries #1} \hskip \labelsep {\bfseries #2}]}{\end {trivlist}}
+%\newtheorem{theorem}{Theorem}[section]
+
+
+\newcounter{definitioncounter}
+\newenvironment{definition}[2]
+[DEFINIZIONE \thesection.\thedefinitioncounter] {\refstepcounter{definitioncounter}\begin {trivlist}
+\item[\hskip \labelsep {\bfseries #1} \hskip \labelsep {\bfseries #2}]}{\end {trivlist}}
+
+\newcounter{thelemmacounter}%[chapter]
+\newenvironment{lemma}[2]
+[LEMMA \thesection.\thelemmacounter]{
+\refstepcounter{thelemmacounter}
+\begin {trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2}]
+\end {trivlist}}
+
+
+\newcounter{lemmacounter}
+\counterwithin{lemmacounter}{section}
+\newenvironment{Lemma}[2]
+[LEMMA \thelemmacounter] {\refstepcounter{lemmacounter}\begin {trivlist}
+\item[\hskip \labelsep {\bfseries #1} \hskip \labelsep {\bfseries #2}]}{\end {trivlist}}
+
+\newcounter{corollariocounter}%[chapter]
+\newenvironment{corollario}[2]
+[COROLLARIO \thesection.\thecorollariocounter]{
+\refstepcounter{corollariocounter}
+\begin {trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2}]
+\end {trivlist}}
+
+\newcounter{osscounter}
+\newenvironment{osservazione}[2]
+[OSSERVAZIONE \thesection.\theosscounter] {\refstepcounter{osscounter}\begin {trivlist}
+\item[\hskip \labelsep {\bfseries #1} \hskip \labelsep {\bfseries #2}]}{\end {trivlist}}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\D}{\mathbb{D}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\LL}{\mathcal{L}}
+\newcommand{\PP}{\mathcal{P}}
+\newcommand{\HH}{\mathcal{H}}
+\newcommand{\KK}{\mathcal{K}}
+\newcommand{\RR}{\mathcal{R}}
+\newcommand{\CC}{\mathcal{C}}
+
+\title{Analisi Matematica 1 -  Dispensa sul Calcolo Integrale 
+
+[Prima bozza incompleta]}
+\author{Luca Lombardo}
+\date{Aggiornata al 15/06/2020}
+
+\begin{document}
+
+\maketitle
+
+\noindent Questo capitolo si basa sulla definizione di integrale di Riemann che dipende fortemente dalla struttura ordinata della retta reale. La teoria dell'integrazione risponde ad una duplice esigenza: risolvere il \emph{problema della misura} (dare metodi generali per il calcolo di aree e volumi) e risolvere il \emph{problema della primitiva} (che consiste nel cercare una funzione avente come derivata la funzione assegnata). \\
+%Si potrebbe fare un piccolo discorso su i pluri rettangoli e da dove è nata la necessità del calcolo integrale
+
+\section{Integrale di Riemann}
+Considero una funzione $f:[a, b] \to \R$ limitata \\ 
+
+\begin{definition}{Decomposizione}
+Si chiama {\it decomposizione} ({\it o partizione, suddivisione}) di $[a,b]$ un insieme finito 
+
+$$ D=\{x_0, x_1, ... , x_p\} $$
+
+Tale che $a=x_0 < x_1 < ... < x_p=b$ 
+\begin{flushleft}
+Si denota con $\D([a,b])$ la somma di tutte le decomposizioni di $[a,b]$ \\
+\end{flushleft}
+
+
+\end{definition}
+
+\begin{definition}{Finezza di una decomposizione}
+Date due decomposizioni $D', D''$ dell'intervallo $[a,b]$ diremo che $D''$ è \emph{più fine} di $D'$ se $D' \subset D''$ \\
+
+\noindent Quindi, se $D''$ è più fine di $D'$, la decomposizione $D''$ è ottenuta intercalando altri punti fra i punti di $D''$; perciò ogni intervallo di $D'$ si spezza in un numero finito di intervalli, che fanno parte della suddivisione $D''$ \\
+
+\noindent La relazione di finezza (che viene a coincidere con una relazione di inclusione fra insiemi) è evidentemente una relazione d'ordine. Inoltre, date due decomposizioni $D', D''$ ne esiste sempre una più fine entrambe: basti considerare $D' \cup D''$ per esempio. Le decomposizioni di un insieme $[a,b]$ vanno a costituire un \emph{insieme diretto (o filtrante)} \\
+\end{definition}
+
+\begin{definition}{Ampiezza di una decomposizione}
+
+Data una decomposizione $D=\{x_0, ... ,x_p\}$ di $[a.b]$, si dice \emph{ampiezza} $D$ il numero: 
+
+$$ |D|= \max_{1 \leq i \leq p} ~ (x_i - x_{i-1}) $$
+\end{definition}
+
+\begin{definition}{Somma inferiore}
+Sia $D \in \D([a,b])$. Poniamo:
+
+$$ m_i = inf \{f(x): x \in [x_{i-1}, x_i]\}$$
+\begin{flushleft}
+Che sappiamo appartenere ai reali poiché la funzione è limitata
+\end{flushleft}
+
+Il numero reale: 
+
+$$ s(D,f) = (x_1 - x_0)m_1 + ... + (x_p - x_{p-1})m_p= \sum_{i=0}^p m_i (x_i - x_{i -1}) $$
+\begin{flushleft}
+Si dice somma inferiore relativa alla decomposizione $D$
+\end{flushleft}
+\end{definition}
+
+\begin{definition}{Somma superiore}
+Sia $D \in \D([a,b])$. Poniamo:
+
+$$ M_i = sup \{f(x) : x \in [x_{i-1}, x_{i}] \}$$
+
+\noindent  Il numero reale: 
+
+$$ S(D,f) = (x_1 - x_0)M_1 + ... + (x_p - x_{p-1})M_p = \sum_{i=0}^p M_i (x_i - x_{i -1})$$
+
+\begin{flushleft}
+Si dice somma superiore relativa alla decomposizione $D$ \\
+\end{flushleft}
+\end{definition}
+
+\noindent  Considero ora i due insiemi: 
+
+$$A=\{s(D,f) : ~ D \in \D([a,b])\} \qquad B=\{S(D,f) : ~ D \in \D([a,b])\}$$ \\
+
+\noindent I valori $supA$ e $inf B$ prendono rispettivamente il nome di \emph{integrale inferiore} e \emph{integrale superiore} di $f$ in $[a,b]$ \\
+
+\begin{osservazione}{}
+ Dato che $m_i \leq M_i ~ \forall ~ i = 1,2,...,p$ e inoltre $(x_i - x_{i -1}) > 0 ~ \forall i = 1,2,...,p $ allora: 
+ 
+ $$ s(D,f) \leq S(D,f) \quad \forall D \in \D([a,b]) $$
+ 
+\noindent In altre parole: una qualunque somma inferiore è minore uguale di una qualunque somma superiore. \\
+\end{osservazione}
+
+\begin{osservazione}{}
+Notiamo che $S(D,f)$ e $s(D,f)$ sono numeri reali ben definiti grazie al fatto che stiamo supponendo $f$ limitata: altrimenti qualcuno fra i numeri $M_i$ e $m_i$ potrebbe essere infinito. Ci aspettiamo infatti che infittendo sempre di più i nodi, le somme superiori ed inferiori forniscano una approssimazione sempre più accurata dell'area della regione che ci interessa
+\end{osservazione}
+
+\begin{Lemma}{} 
+ \label{somme}
+ 
+\textsc{Proposizione}: Sia $D \in \D([a,b])$, con $D = \{x_0,x_1,...,x_p\}$ e sia $x^* \in ]x_{i -1} , x_i [$. Poniamo $D^*=D \cup \{x^*\}$. Allora:
+ 
+ $$ s(D,f) \leq s(D^*, f) \quad (1)  $$
+ $$ S(D,f) \geq S(D^*, f) \quad (2)  $$
+
+\textsc{Dimostrazione (1)} \\
+
+\noindent Considero la differenza: 
+$$s(D,f) - s(D^*, f) = [(x^* - x_{i-1}) \bar m_i + (x_i - x_{i-1})\bar{\bar m}_i]$$
+
+\noindent Dove: 
+
+$$\bar m_i = inf \{f(x) : x \in [x_{i-1}, x^*]\}$$
+
+$$\bar{\bar m}_i = inf \{f(x) : x \in [x^*, x_i]\}$$
+
+\noindent Poiché
+ \begin{flushleft}
+ $\bar m_i \geq m_i, ~ \bar{\bar m}_i \geq m_i $ e considerando che $[x_{i-1}, x^*] \subseteq [x_{i-1}, x_i]$ e $[x^*, x_i] \subseteq [x_{i-1}, x_i]$ allora: \\
+\end{flushleft}
+ 
+ $$s(D,f) - s(D^*, f) \geq [(x^* - x_{i-1})m_i + (x_i - x_{i-1})] - (x_i - x_{i-1})m_i = 0 $$
+
+\noindent Da cui: 
+ 
+ $$ s(D,f) \leq s(D^*, f) $$
+ 
+ \begin{flushright}
+  $\Box$
+ \end{flushright}
+\end{Lemma}
+
+\begin{osservazione}{}
+Il lemma appena dimostrato ci dice dunque che la funzione \textit{somma inferiore} definita nell'insieme ordinato delle suddivisioni, è non decrescente. Mentre la funzione \textit{somma superiore} è non crescente
+\end{osservazione}
+
+\newpage
+\begin{theorem}{}
+
+\begin{flushleft}
+Siano gli insiemi $A$ e $B$ come prima 
+\end{flushleft}
+
+\textsc{Ipotesi}: Sia $f: (a,b) \to \R$ limitata \\
+
+\textsc{Tesi}: $\sup A \leq \inf B$  
+\begin{flushleft}
+\textsc{Dimostrazione}: 
+\end{flushleft}
+Voglio dimostrare che: 
+
+$$ s(D', f) \leq S(D'', f) \qquad \forall D', D'' \in \D([a,b])$$
+Si hanno due casi:
+\begin{itemize}
+    \item $D'=D'' = D = \{x_0, x_1,..., x_p\}$
+\end{itemize}
+Allora: 
+$$ s(D', f) = s (D, f) = \sum_{i=1}^p  m_i (x_i - x_{i-1}) \leq \sum_{i=1}^{p} M_i(x_i - x_{i-1}) = S(D,f)=S(D'',f)$$
+Il che implica: 
+$$ s(D', f) \leq S(D'',f) $$ 
+Passiamo ora al secondo caso \\
+
+\begin{itemize}
+    \item $D' \neq D''$
+\end{itemize}
+Sia $D^*$ la decomposizione di $[a,b]$ ottenuta considerando sia i punti appartenenti a $D'$ sia i punti appartenenti a $D''$ Avremo allora che:
+$$ D' \subseteq D^* \qquad \qquad D'' \subseteq D^* $$
+otteniamo quindi rispettivamente che 
+$$ s(D',f) \leq s(D^*,f)  \qquad \qquad S (D'',f) \geq S(D^*,f) $$
+
+\noindent Ne segue:
+$$ s(D',f) \leq s(D*,f) \leq S(D^*,f) \leq S(D'', f) $$
+Cioè la tesi cercata: 
+$$ s(D', f) \leq S(D'', f) \qquad \forall D', D'' \in \D([a,b])$$
+\begin{flushright}
+ $\Box$
+\end{flushright}
+
+\end{theorem}
+
+\newpage
+ \subsection{Funzione Reimann Integrabile}
+Dati come prima i due insiemi: 
+
+$$A=\{s(D,f) : ~ D \in \D([a,b])\} \qquad B=\{S(D,f) : ~ D \in \D([a,b])\}$$ \\
+
+\noindent Sia $f[a,b] \to \R$ limitata. La funzione si dice integrabile secondo Riemann in $[a,b]$ quando: 
+
+$$\sup A = \inf B $$
+Si pone\footnote{Scrivere $\displaystyle \int_{[a,b]} f(x) dx$ è solo una maniera leggermente più elegante di scrivere $\displaystyle \int_{a}^b f(x) dx$ } $\displaystyle \int_{[a,b]} f(x) dx = supA = inf B$ \\
+
+\noindent Il senso del simbolo $\int$ è quello di ricordarci che si fa il limite di somme finite di aree di rettangolini, la cui base è un intervallo dell'asse delle $x$ centrato nel punto $x$ di ampiezza \emph{piccolissima} pari a $dx$, e la cui altezza è un intervallo dell'asse $y$ di lunghezza pari $|f(x)|$, presa col segno di $f(x)$
+
+\begin{definition}{}
+Sia $f[a,b] \to \R$ limitata tale che 
+
+$$ f(x) > 0 \quad \forall x \in [a,b] $$
+Allora l'insieme: 
+
+$$ R_f = \{(x,y) \in \R^2: ~ a \leq x \leq b , ~ 0 \leq y \leq f(x)\}$$
+Si dice \emph{rettangoloide} individuato a $f$. Se $f$ è integrabile secondo Riemann in $[a,b]$, allora poniamo per definizione
+
+$$ area(R_f) = \displaystyle \int_{[a,b]} f(x) dx $$ \\
+Chiamiamo \textit{plurirettangoli} l'unione della famiglia finita di rettangoli con i lati paralleli agli assi, non sovrapposti. \\
+
+\noindent Allora la somma inferiore relativa ad una certa decomposizione $D'=\{x_0', ... , x_p'\}$ rappresenta l'area di un plurirettangolo $R'$ contenuto in $R_f$; i rettangoli che lo compongono hanno come base gli intervalli $[x_{i-1}', x_i']$ e, fra quelli contenuti in $R_f$, hanno altezze massime. Un plurirettangolo con queste caratteristiche si dice \textit{iscritto} in $R_f$. \\
+
+\noindent Analogamente la somma superiore relativa dalla decomposizione $D''= \{x_0'', ... , x_p''\}$ rappresenta l'area di un plurirettangolo $R''$ che contiene $R_f$. Tra i plurirettangoli con basi $[x_{i-1}'', x_i'']$, $R'' $ è il minimo plurirettangolo contente $R_f$; esso prende il nome di plurirettangolo \textit{circoscritto} a $R_f$. Si ha dunque $R'\subset R_f \subset R''$. \\
+
+\noindent Quanto detto afferma che si possono trovare due plurirettangoli, uno circoscritto ed uno iscritto, le cui aree differiscono fra loro meno di un valore molto piccolo $\epsilon$. Dunque se $f$ è una funzione integrabile risulta ragionevole attribuire a $R_f$ un area uguale all'elemento separatore delle classi numeriche descritte dalle aree dei plurirettangoli iscritti e circoscritti, cioè uguale all'integrale di $f$ \\
+\end{definition}
+
+\begin{theorem}{Condizione caratteristica per l'integrabilità }
+\label{caratteristica}
+\textsc{Proposizione}: Sia $f:[a,b] \to \R$. Allora sono equivalenti: 
+\begin{enumerate}
+    \item $f$ integrabile secondo Riemann in $[a,b]$
+    \item $\forall \epsilon > 0 \quad \exists ~ D_\epsilon \in \D([a,b]): S(D_\epsilon , f) - s(D_\epsilon, f) < \epsilon$
+\end{enumerate}
+ \textsc{Dimostrazione} ($1 \Rightarrow 2$) \\
+ 
+Per ipotesi sappiamo che 
+$$ supA = inf B = I \in \R $$
+Fisso $\epsilon > 0$. Dal fatto che $supA=I$ ottengo che (per la seconda proprietà del $sup$):
+$$ \exists ~ D' \in \D([a,b]) : s(D',f) > I - \frac{\epsilon}{2} $$
+Da $infB = I$ ottengo (per la seconda proprietà dell'$inf$):
+$$ \exists ~ D'' \in \D([a,b]) : S(D'',f) < I + \frac{\epsilon}{2} $$
+Considero $D_\epsilon = D' \cup D''$. Per il Lemma \ref{somme} otteniamo che 
+$$ s(D_\epsilon,f) \geq s(D', f) > I -\frac{\epsilon}{2} \quad \Longrightarrow \quad - s(D_\epsilon) < -I + \frac{\epsilon}{2} $$
+
+$$ S(D_\epsilon,f) \leq S(D'', f) < I +\frac{\epsilon}{2} \quad \Longrightarrow \quad S(D_\epsilon) < I + \frac{\epsilon}{2} $$
+Sommando membro a membro si ottiene che:
+$$ S(D_\epsilon, f) - s(D_\epsilon, f) < \epsilon $$ 
+
+\noindent \textsc{Dimostrazione} ($2 \Rightarrow 1$)\\
+
+\noindent Sappiamo che $supA \leq infB$, per ottenere la tesi cercata dobbiamo provare che $supA=infB$. Basta quindi dimostrare che:
+
+$$ 0 \leq infB - supA \leq \epsilon \qquad \forall \epsilon >0 $$
+Fisso $\epsilon > 0$. Per ipotesi so che 
+$$ \exists ~ D_\epsilon \in \D([a,b]): ~ S(D_\epsilon,f) - s(D_\epsilon, f) < \epsilon $$
+Da questo sappiamo pure che: 
+$$ S(D_\epsilon,f) \geq infB \qquad \text{per la prima proprietà dell'}inf $$
+$$ s(D_\epsilon, f) \leq supA \qquad \text{per la prima proprietà dell'}sup $$
+Questo implica che: 
+$$ -s(D_\epsilon,f) \geq -supA $$
+Allora otteniamo che:
+$$ infB -supA \leq S(D_\epsilon ,f) - s(D_\epsilon,f) < \epsilon $$
+Cioè la tesi cercata:
+$$ infB -supA < \epsilon $$
+\begin{flushright}
+ $\Box$ \\
+\end{flushright}
+\end{theorem}
+
+\begin{corollario}{}
+La condizione appena espressa nel Teorema \ref{caratteristica} può essere riscritta utilizzando la definizione di \emph{oscillazione} di una funzione in un intervallo. \\
+
+\noindent \textsc{Proposizione:} Sia $f \in \RR ([a,b])$ se e solo se $\exists D \in \D([a,b]) ~ D=\{x_0, ... ,x_n\}$ tale che 
+
+$$ \sum_{i=1}^n osc[x_{i-1}, x_i],f(x_{i-1}, x_i) < \epsilon  $$ \\
+\end{corollario}
+
+
+
+\begin{osservazione}{Funzione di Dirichlet}
+Non tutte le funzioni sono Reimann integrabili però, un esempio famoso è quello della funzione di Dirichelt: poiché in ogni intervallo (non degenere) vi sono sia punti razionali che punti irrazionali.\\
+
+\noindent Considero $f:[a,b] \to \R$ così definita: 
+
+$$f(x) =
+\bigg \{
+\begin{array}{rl}
+1 & x \in [a,b] \cap \Q \\
+0 & x \in [a,b] \setminus \Q \\
+\end{array}
+$$
+Se $D=\{x_1 , x_2 , ... , x_p \}$ è una delle decomposizione di $[a,b]$ allora: $$ m_i = inf \{f(x) : x \in [x_{i-1}, x_i] \} = 0 $$
+Poichè $[x_{i-1}, x_i] \cap (\R \setminus \Q) \neq \emptyset$. Mentre 
+$$ M_i = sup \{f(x): x \in [x_{i-1}, x_i]\} = 1 $$
+Poichè $[x_{i-1}, x_i] \cap \Q \neq \emptyset$ \\
+
+\noindent Dunque: 
+$$ s(D_\epsilon, f) = 0 \qquad \text{mentre} \qquad S(D_\epsilon, f) = b -a $$
+Allora avremo che:
+$$ A=\{0\} \Rightarrow supA=0 \qquad \qquad B=\{b-a\} \Rightarrow infB= b -a  $$
+
+\noindent  Cioè: 
+$$ supA<infB $$
+Di conseguenza, per la condizione necessaria per la Reimann-integrabilità, la \emph{funzione di Dirichlet non è Riemann integrabile}
+\end{osservazione}
+
+\newpage
+\subsection{Proprietà dell'integrale di Riemann (da rivedere e ampliare)}
+Consideriamo una funzione $f \in \RR ([a,b])$. Sappiamo che $\forall ~ [\alpha,\beta] \subseteq [a,b]$ risulta $f \in \RR ([a,b])$. Si pone quindi per definizione: 
+
+\[ \int_\alpha^\beta f(x)dx =
+\begin{sistema} 
+0 \qquad \alpha=\beta \\ 
+
+\displaystyle \int_\alpha^\beta f(x)dx \qquad \alpha < \beta \\ 
+
+\displaystyle -\int_\beta^\alpha f(x)dx \qquad \alpha > \beta \\
+\end{sistema} 
+\]
+%decisamente da sistemare
+
+%\begin{definition}{Oscillazione}
+
+%Sia $f: [a.b] \ to \R$ una funzione limitata. Se $I$ è un intervallo contenuto in $[a.b]$ allora si definisce oscillazione di $f$ in $I$ il numero reale:
+
+%$$ osc(I,f)= \sup_I f - \infI f $$
+%\end{definition}
+\begin{theorem}{Proprietà distributiva} 
+
+\textsc{Ipotesi:} Siano $c_1, c_2 \in \R$ e siano $f_1, f_2 \in \RR ([a,b])$ \\
+
+\textsc{Tesi:} Sia $c_1 f_1 + c_2 f_2 \in \RR ([a,b])$ e risulta 
+$$ \int_{[a,b]} (c_1 f_1(x) + c_2 f_2(x))dx = c_1 \int_{[a,b]}  f_1(x) dx + c_2 \int_{[a,b]}  f_2(x)dx$$ \\
+
+\noindent Equivale a dimostrare che $\RR([a,b])$ è uno spazio vettoriale \\
+\end{theorem}
+
+\begin{theorem}{Positività}
+
+\textsc{Ipotesi:} Sia $f \in \RR ([a,b])$ con $f(x) \geq 0 \quad \forall x \in [a,b]$\\
+
+\textsc{Tesi:} $\displaystyle \int_{[a,b]} f(x) dx \geq 0$ \\
+
+\noindent \textsc{Dimostrazione:} \\
+
+\noindent Dato che $f \geq 0$ in $[a,b]$ allora
+$$ \forall D \in \D([a,b]), ~ \text{con} ~ D=\{x_0,x_1,...,x_p\}$$
+Si ha che:
+$$ m_i=inf\{f(x): x \in [x_{i-1}, x_i]\} \geq 0 \qquad \forall i=0,1,...,p $$
+E allora
+$$ s(D,f)=\sum_{i=1}^p m_i(x_i - x_{i-1}) \geq 0$$
+Per definizione di integrale di Riemann segue che 
+$$ \int_{[a,b]} f(x) dx = supA \geq s(D,f) \geq 0 $$
+
+\begin{flushright}
+ $\Box$
+\end{flushright}
+\end{theorem}
+
+\newpage
+%\begin{corollario}{} 
+
+%\textsc{Ipotesi:} Sia $f \in \CC ^0([a,b]), ~~ f(x) > 0 \qquad \forall x \in [a,b]$ 
+%$$\exists ~ c \in [a.b] : f(c) > 0$$ 
+
+%\textsc{Tesi:} $\displaystyle \int_{[a,b]} f(x) dx > 0$ \\
+
+%\end{corollario}
+
+\begin{theorem}{Proprietà additiva}
+
+\textsc{Ipotesi:} Sia $f \in \RR ([a,b])$ e sia $c \in ]a,b[$ \\ 
+
+\textsc{Tesi:} Considero $f \in \RR ([a,b]) \cap  \RR([c,b])$ allora si ha: 
+$$ \int_{[a,b]} f(x) dx = \int_{[a,c]} f(x) dx + \int_{[c,b]} f(x) dx $$\\
+\end{theorem}
+
+
+\begin{theorem}{Proprietà di monotonia}
+
+\begin{itemize}
+    \item \textsc{Caso 1}
+\end{itemize}
+
+\textsc{Ipotesi:} Siano $f,g \in \RR ([a,b])$ tale che $ f(x) \leq g(x), \quad \forall x  \in [a,b]$ \\ 
+
+\textsc{Tesi:} $\displaystyle \int_{[a,b]} f(x) dx \leq \int_{[a,b]} g(x) dx$ \\
+
+\textsc{Dimostrazione:} \\
+
+\noindent Per la proprietà distributiva si ha che 
+$$ \int_{[a,b]} (g(x) - f(x)) dx = \int_{[a,b]} g(x) dx - \int_{[a,b]} f(x) dx$$
+Dato che $g(x) - f(x) \geq 0$ per ipotesi, allora pure $ \displaystyle \int_{[a,b]} (g(x) - f(x)) dx \geq 0$. Ne segue che
+$$ \int_{[a,b]} g(x) dx - \int_{[a,b]} f(x) dx \geq 0$$
+
+\begin{flushright}
+ $\Box$
+\end{flushright}
+
+\begin{itemize}
+    \item \textsc{Caso 2}
+\end{itemize}
+
+\textsc{Ipotesi:} Siano $f,g \in \RR ([a,b])$ tale che per $x \to b^-$ si abbia $f/g \to 0$ \\
+
+\textsc{Tesi:} Allora risulta che se l’integrale di g è convergente allora anche l'integrale di f è convergente mentre se l’integrale di f è divergente anche l’integrale di g è  divergente. \\
+
+\textsc{Dimostrazione}: \\
+
+\noindent Il fatto che per $x \to b^-$ si abbia $f/g \to 0$ implica che $\exists ~ c \in [a,b[$ tale che $\forall x \in [c,b[$ si ha $f/g \leq 1$ cioè $f(x) \leq g(x)$. Dunque per il caso precedente e per l'additività dell'integrale possiamo affermare che 
+$$ \int_a^b f = \int_a^c f + \int_c^b f \leq \int_a^c f + \int_c^b g = \int_a^c f +\int_a^b g - \int_a^c g $$
+Sappiamo che gli integrali di $f$ e $g$ su $[a,c]$ sono convergenti in quanto $f$ e $g$ sono limitate appartengono a $\RR([a,c])$. Dunque se l'integrale da $a$ a $b$ di $g(x)$ converge anche quello di $f(x)$ lo farà, lo stesso per il viceversa. 
+\begin{flushright}
+ $\Box$
+\end{flushright}
+
+\begin{itemize}
+    \item \textsc{Caso 3}
+\end{itemize}
+
+\textsc{Ipotesi:} Siano $f,g \in \RR ([a,b])$ tale che per $x \to b^-$ si abbia $f/g \to 1$ \\
+
+\textsc{Tesi:} Allora risulta che i seguenti integrali hanno lo stesso carattere 
+$$\int_a^b f(x) d(x) \qquad \qquad \int_a^b g(x) dx $$
+
+\textsc{Dimostrazione}: \\
+
+\noindent Il fatto che per $x \to b^-$ si abbia $f/g \to 1$ implica che $\exists ~ c \in [a,b[$ tale che
+$$ \frac{1}{2} \leq \frac{f(x)}{g(x)} \leq 2 \qquad \forall x \in [c,b[ $$
+Si avrà quindi 
+$$ f(x) \leq 2g(x), \qquad g(x) \leq 2f(x) $$
+e si procede come nel caso precedente
+\begin{flushright}
+ $\Box$
+\end{flushright}
+\end{theorem}
+
+\begin{osservazione}{}
+Nei casi più freqeunti questa proprietà si applica confrontando la funzione con una potenza del tipo 
+$$ (x - x_0)^\alpha \qquad \alpha \in \R $$ \\
+\end{osservazione}
+
+\begin{theorem}{Proprietà di isotomia}
+
+\textsc{Ipotesi:} Sia $f \in \RR ([a,b])$ con $f(x) \geq 0 \qquad \forall x \in [a,b]$ \\ 
+
+\textsc{Tesi:} $\forall [\alpha,\beta] \subseteq [a,b]$ risulta $f \in R([\alpha,\beta])$ con 
+$$  \int_{[a,b]} f(x) dx \geq  \int_{[\alpha,\beta]} f(x) dx $$\\
+\end{theorem}
+\newpage
+\begin{theorem}{Proprietà di simmetria}
+
+\noindent \textsc{Proposizione:} Sia $f:[-a,a] \to \R$ una funzione tale che $f \in \RR ([a,b])$. Allora se $f$ è pari si ha che 
+
+$$ \int_{-a}^a f(x) dx = 2 \int _0^a f(x)dx$$
+
+\noindent Se invece $f$ è dispari si ha
+
+$$ \int_{-a}^a f(x) dx =0 $$ 
+
+\textsc{Dimostrazione}: (funzione pari) \\
+
+\noindent Per la \emph{proprietà additiva} sappiamo che 
+
+$$ \int_{-a}^a f(x) dx = \int_{-a}^0 f(x) dx + \int_{0}^a f(x) dx $$ 
+
+\noindent Per ipotesi sappiamo che $f$ è pari e che quindi $\forall x \in [-a, a]$ si ha $f(x) = f(-x)$. Applicando un semplice cambio di variabile si ottiene che 
+
+$$ \int_{-a}^0 f(x) dx = \int_{a}^0 f(x) d((-x) = - \int_{a}^0 f(x) dx = \int_{0}^a f(x) dx =$$
+
+\noindent Abbiamo così ottenuto il risultato cercato per integrali di funzioni pari in intervalli \emph{simmetrici} \\
+
+\textsc{Dimostrazione}: (funzione dispari) \\
+
+\noindent Questa dimostrazione è sostanzialmente analoga a quella precedente: basti notare che, per definizione di funzione dispari, abbiamo che $\forall x \in [-a,a]$ allora $-f(x) = f(-x)$. Da qui in poi si procede come prima. \\
+
+\end{theorem}
+
+\begin{theorem}{}
+Siano $f,g \in \RR ([a,b])$ e sia $c \in ]a,b[$. Consideriamo la funzione $h(x)$ così definita
+ \[ h(x) =
+\begin{sistema} 
+f(x) \qquad x \in [a,c[ \\ 
+
+g(x) \qquad x \in [c,b] \\ 
+
+\end{sistema} 
+\]
+Allora si ha 
+
+$$  \int_{a}^{b} h(x)dx =  \int_{a}^{c} f(x)dx +  \int_{c}^{b} g(x)dx$$
+
+\end{theorem}
+
+
+
+\newpage
+\subsection{Teoremi della media}
+
+\begin{definition}{Valore medio}
+Se $f$ è una funzione integrabile in $[a,b]$ il numero 
+$$ \frac{1}{b-a} \int_a^b f(x)dx $$
+viene detto \emph{media} o \emph{valore medio} di $f$ in $[a,b]$ \\
+\end{definition}
+
+\begin{theorem}{Teorema della media}
+
+\textsc{Ipotesi:} Sia $f \in R([a.b])$ e siano rispettivamente il suo estremo superiore e il suo estremo inferiore:
+$$ M=sup\{f(x): x \in [a.b]\} \qquad m=inf\{f(x): x \in [a.b]\}$$ 
+
+\textsc{Tesi:} $m(b-a) \leq \displaystyle \int_a^b f(x)dx \leq M(b-a)$ \\
+
+\noindent Vogliamo quindi provare che il valore medio di $f$ è compreso fra il suo estremo superiore e il suo estremo inferiore. \\
+
+\textsc{Dimostrazione}\\
+
+\noindent Per definizione abbiamo che $\int_a^b f(x)dx = supA =infB$. considero allora una decomposizione $D \in \D([a,b])$ tale che $D=\{a,b\}$. Avremo allora che: 
+$$ s(D,f)=(b-a)m ~ \in A $$
+$$ S(D, f) = (b-a)M ~ \in B $$
+Segue che:
+$$ s(D,f) \leq supA \Longrightarrow (b-a)m \leq \int_a^b f(x) dx$$
+$$ S(D,f) \geq infB \Longrightarrow (b-a)M \geq \int_a^b f(x) dx$$
+Cioè la tesi cercata: 
+$$m(b-a) \leq \int_a^b f(x)dx \leq M(b-a)$$
+\begin{flushright}
+ $\Box$ \\
+\end{flushright}
+
+
+\end{theorem}
+
+\newpage
+\begin{osservazione}{}
+Da un punto di vista geometrico il concetto è molto semplice: se $f>0$ in $[a,b]$ allora sappiamo che $\displaystyle \int_a^b f(x)dx$ rappresenta l'area del rettangoloide sotteso al grafico. \\
+
+Se consideriamo i due rettangoli 
+$$ \Delta_1 = [a,b] \times [0,m] \qquad \qquad \Delta_2 = [a,b] \times [0,M] $$
+Avremo che
+\begin{itemize}
+    \item $Area(\Delta_1)=(b-a)m$
+    \item $Area(\Delta_2) = (b-a)M$
+    \item $Area(\R_f)= \displaystyle \int_a^b f(x)dx$
+\end{itemize}
+Con 
+$$ Area(\Delta_1) \leq Area(R_f) \leq Area(\Delta_2) $$ \\
+\end{osservazione}
+
+\begin{theorem}{}
+
+\textsc{Ipotesi:} Sia $f \in C^0 ([a,b])$ una funzione Riemann integrabile \\
+
+\textsc{Tesi:} $\exists ~ c \in [a,b] : \displaystyle \int_a^b f(x)dx = f(c) (b-a)$ \\
+
+\noindent \textsc{Dimostrazione:} \\
+\begin{flushleft}
+Dal teorema di Weierstrass sappiamo che la funzione $f$ ammette massimo e minimo:
+\end{flushleft}
+$$M=max\{f(x): x \in [a,b]\}$$
+$$m=min\{f(x): x \in [a,b]\}$$
+
+\noindent Dal teorema della media abbiamo che:
+
+$$ m \leq \frac{1}{b-a} \int_a^b f(x) dx \leq M $$
+Adesso posto $\delta = \displaystyle \frac{1}{b-a} \int_a^b f(x) $ per il Teorema dei valori intermedi otteniamo che:
+$$ \exists ~ c \in [a,b] : \delta = f(c) $$
+\begin{flushright}
+ $\Box$ \\
+\end{flushright}
+
+
+\end{theorem}
+
+\newpage
+\section{Classi di funzioni integrabili}
+Denotiamo con $\RR ([a,b])$ la famiglia delle funzioni $f:[a,b] \to \R$ integrabile secondo Riemann in $[a,b]$
+
+\subsection{Integrabilità delle funzioni monotone}
+\begin{theorem}{}
+
+\textsc{Ipotesi:} Sia $f(a,b) \to \R$ monotona \\
+
+\textsc{Tesi:} $f \in \RR ([a,b])$ \\
+
+\noindent \textsc{Dimostrazione} 
+
+\begin{flushleft}
+Supponiamo ad esempio che sia monotona crescente, gli altri casi sono analoghi. \\ 
+\end{flushleft}
+
+Per avere la tesi devo dimostrare che 
+$$ \forall \epsilon > 0 ~~ \exists ~ D_\epsilon \in \D([a,b]): S(D_\epsilon, f) - s(D_\epsilon, f) < \epsilon $$
+Fissiamo $\epsilon > 0$ e scegliamo $\delta_\epsilon = \displaystyle \frac{\epsilon}{f(b) - f(a)}$ il quale è positivo dato che $a < b \Rightarrow f(a) < f(b)$. 
+\begin{flushleft}
+Considero la decomposizione $D_\epsilon \in \D([a,b])$ con $D_\epsilon= \{x_1, ... , x_p\}$ tale che 
+\end{flushleft}
+\begin{equation*}
+a=x_0 < ... < x_p=b \quad \text{e} \quad x_i - x_{i - 1} < \delta_\epsilon \quad \forall i = 1, ... , p \qquad (1)
+\end{equation*}
+Si ha allora: \begin{itemize}
+    \item $m_i = inf \{f(x): x \in [x_{i-1} , x_i]\} = f(x_{i-1})$ poiché $f$ monotona crescente.
+    \item $M_i = sup \{f(x): x \in [x_{i-1} , x_i]\} = f(x_{i})$ poiché $f$ monotona crescente.
+\end{itemize}
+Dunque
+$$ s(D_\epsilon, f) - s(D_\epsilon, f) = \sum_{n=1}^p (M_i - m_i)(x_i - x_{i-1}) =  \sum_{n=1}^p (f(x_i) - f(x_{i-1}))(x_i - x_{i-1})$$
+Utilizzando la $(1)$ otteniamo che 
+
+    $$\sum_{n=1}^p (f(x_i) - f(x_{i-1}))(x_i - x_{i-1}) <
+    \sum_{n=1}^p (f(x_i) - f(x_{i-1})) \frac{\epsilon}{f(b) - f(a)} = $$
+    
+    $$\frac{\epsilon}{f(b) - f(a)} \sum_{n=1}^p (f(x_i) - f(x_{i-1})) = \frac{\epsilon}{f(b) - f(a)} (f(x_p) - f(x_0)) = \epsilon$$
+Da cui segue la tesi:
+$$ S(D_\epsilon, f) - s(D_\epsilon, f) < \epsilon $$
+\begin{flushright}
+ $\Box$
+\end{flushright}
+\end{theorem}
+
+\newpage
+\subsection{Integrabilità delle funzioni continue}
+\begin{theorem}{}
+
+\textsc{Ipotesi:} Sia $f \in \CC ^0([a,b])$ \\ 
+
+\textsc{Tesi:} $f \in \RR ([a,b])$ \\
+
+\noindent \textsc{Dimostrazione} \\ 
+
+\noindent Per ottenere la tesi devo dimostrare che 
+
+$$ \forall \epsilon > 0 ~~ \exists ~ D_\epsilon \in \D([a,b]): S(D_\epsilon, f) - s(D_\epsilon, f) < \epsilon $$
+Fisso $\epsilon > 0$. Per il \emph{Teorema di Weierstrass} sappiamo che la funzione è limitata in $[a,b]$. Grazie a questo, per il \emph{Teorema di Cantor}, $f$ è uniformemente continua in $[a.b]$. \\
+
+\noindent In corrispondenza a $\displaystyle \frac{\epsilon}{b-a} > 0, ~~ \exists ~ \delta_\epsilon > 0 : \forall x', x'' \in [a,b] $ con $[x'- x''] < \delta_\epsilon$ risulta: 
+$$ |f(x') - f(x'')| < \frac{\epsilon}{b -a} \qquad (1)$$
+Scelgo $D_\epsilon \in \D([a,b])$ con $D_\epsilon= \{x_1, ... , x_p\}$ tale che 
+$$ a=x_0 < ... < x_p=b \quad \text{e} \quad x_i - x_{i - 1} < \delta_\epsilon \quad \forall i = 1, ... , p \qquad (2)$$
+Allora per il teorema di Weierstrass:
+$$m_i = inf \{f(x): x \in [x_{i-1} , x_i]\} = min \{f(x): x \in [x_{i-1} , x_i]\} = f(\alpha_i) \quad \text{con} ~ \alpha_i \in [x_{i-1} , x_i] $$ 
+$$M_i = sup \{f(x): x \in [x_{i-1} , x_i]\}= max \{f(x): x \in [x_{i-1} , x_i]\} = f(\beta_{i}) \quad \text{con} ~ \beta_i \in [x_{i-1} , x_i]$$ 
+Dunque
+$$S(D_\epsilon, f) - s(D_\epsilon, f) = \sum_{n=1}^p (M_i -m_i)(x_i - x_{i-1}) = \sum_{n=1}^p (f(\beta_i) - f(\alpha_i))(x_i - x_{i-1}) \qquad (3)$$
+Dato che $\alpha_i, \beta_i \in [x_{i-1}, x_i]$ allora $|\alpha_i - \beta_i| \leq |x_i  - x_{i-1}|$. Mentre grazie alla $(2)$ si ha $x_i - x_{i - 1} < \delta_\epsilon$. \\
+
+\noindent Per quanto detto sopra abbiamo che $|\alpha_i - \beta_i|<\delta_\epsilon$ e possiamo usare la $(1)$ per ottenere che: 
+$$ |f(\beta_i) - f(\alpha_i)| = f(\beta_i) - f(\alpha_i)$$
+Poiché $f(\beta_i) > f(\alpha_i)$. Andiamo a sostituire nella $(3)$ quanto ottenuto fin ora: 
+$$ S(D_\epsilon, f) - s(D_\epsilon, f) = \sum_{n=1}^p (f(\beta_i) - f(\alpha_i)(x_i - x_{i-1}) < \frac{\epsilon}{b-a}\sum_{n=1}^p (x_i - x_{i-1}) =\frac{\epsilon}{b-a}\sum_{n=1}^p (b-a) = \epsilon $$
+\begin{flushright}
+ $\Box$
+\end{flushright}
+\end{theorem}
+
+\newpage
+\begin{corollario}{}
+
+\noindent \textsc{Ipotesi:} Sia $f \in \RR ([a,b])$ e poniamo $M=\sup_{[a,b]} f$ e $m = \inf_{[a,b]} f$. Considero la funzione $\Gamma: [m,M] \to \R$ continua. \\ 
+
+\noindent \textsc{Tesi:} $\Gamma \circ f \in \RR ([a,b])$ \\
+
+\end{corollario}
+
+
+\subsection{Integrabilità delle funzioni generalmente continue} 
+\begin{definition}{Generale continuità}
+Data $f:[a,b] \to \R$, denotiamo con $D_f$ l'insieme dei punti di discontinuità di $f$. La funzione $f$ si definisce \emph{generalmente continua} se il derivato di $D_f$ è uguale all'insieme vuoto; ovvero se in ogni sotto-intervallo limitato di $[a,b]$ ammette al più un numero finito di punti di discontinuità. \\
+
+\noindent  Ad esempio la funzione $[x]$ (\emph{parte intera}) è generalmente continua perché discontinua solo nei numeri interi. \\
+
+\noindent Una caratteristica come quella della generale continuità è una caratteristica di tipo \emph{puntuale}, cioè soddisfatta \emph{quasi ovunque}. Si faccia attenzione a non confondere questa dicitura con \emph{ad eccessione al più di un insieme di misura nulla}.\\
+
+
+\end{definition}
+
+\begin{theorem}{}
+
+\textsc{Ipotesi:} Sia $f:(a,b) \to \R$ una funzione limitata e generalmente continua in $[a,b]$. Allora essa ammette un numero finito di punti di discontinuità che chiamiamo $c_1,...,c_n$ \\
+
+\textsc{Tesi:} Allora $f \in \RR ([a,b])$ se lo è in ogni intervallo $(c_k, c_{k-1}) ~~ \forall k=0,1,...,n$ ove abbiamo posto $c_0 =a $ e $c_n =b$. In tal caso si pone:
+$$ \int_a^b f(x)dx = \sum_{k=0}^n \int_{c_k}^{c_{k+1}} f(x) dx $$
+\\
+\end{theorem}
+\begin{osservazione}{}
+Questo teorema mette in luce un importante proprietà dell'integrale (sugli intervalli limitati), quella di invarianza: se una funzione limitata e integrabile viene alterata in un numero finito di punti, la funzione ottenuta è ancora limitata ed integrabile ed il valore dell'integrale rimane invariato. \\ %(Si noti l'analogia con le serie) 
+\end{osservazione}
+
+\noindent  Se invece l'intervallo considerato fosse una semiretta del tipo $(a, + \infty)$ allora si può decomporre in un numero finito o un in un'infinità numerabile di intervalli aperti $I_n = (a_k, a_{k+1})$ in ciascuno dei quali $f$ è continua. In tal caso allora si pone: 
+$$ \int_a^{+\infty} f(x)dx = \sum_n \int_{a_n}^{a_{n+1}} f(x) dx $$
+La funzione sarà integrabile se $ \displaystyle \sum_n \int_{a_n}^{a_{n+1}} f(x) dx < \infty$ dove la sommatoria è fatta su un numero finito di addenti (allora sarà ovvia la risposta) o su un numero infinito di addendi. \\
+
+\begin{definition}{Trascurabile}
+
+Consideriamo un insieme $E \subset \R$, esso si definisce trascurabile \footnote{Ha misura nulla secondo Lebesque} se
+
+$$ \forall \epsilon > 0 ~,~ \exists \{I_i\}_{i \in \N} ~~ \text{dove} ~~ \{I_i\}= (\alpha_i, \beta_i) \quad \text{con} \quad E \subset \bigcup_i I_i  $$
+
+\noindent Tale che 
+
+$$ \sum_n (b_i - a_i) \leq \epsilon $$ 
+
+\end{definition}
+
+\begin{osservazione}{}
+Se l'insieme $E \subset \R$ è numerabile allora $E$ è ovviamente trascurabile, basti pensare
+
+$$ E = \{x_1, ... , x_n, ... \} \qquad I_k = (x_k - \frac{\epsilon}{2^{k + \gamma}},x_k + \frac{\epsilon}{2^{k + \gamma}})  $$
+
+$$ \sum_{k=1}^n |I_k| = \sum_{k=1}^n \frac{\epsilon}{2^{k}} = \epsilon$$ \\
+\end{osservazione}
+
+\noindent Una volta introdotta la definizione di \emph{trascurabile} possiamo enunciare un importante teorema. Nel 1907 \emph{Giuseppe Vitali} e \emph{Henri Lebesgue}, indipendentemente uno dall’altro, trovarono che si possono caratterizzare in modo elegante le funzioni integrabili secondo Riemann in termini della misura di Lebesgue.  Grosso modo, le funzioni integrabili secondo Riemann sono quelle i cui punti di discontinuità formano un insieme di misura nulla secondo Lebesgue, e per loro l’integrale secondo Riemann e secondo Lebesgue coincidono. \\
+
+
+\newpage
+\begin{theorem}{Teorema di Vitali - Lebesque}
+\textsc{Proposizione:} Sia $f: [a.b] \to \R$ una funzione limitata\footnote{Il teorema appena enunciato può essere visto sotto un occhio ancora più generale, considerando una funzione $f: \R^n \to \R$ limitata e nulla al di fuori del limitato}. Allora sono equivalenti 
+\begin{itemize}
+    \item $f$ integrabile secondo Riemann 
+    \item L’insieme dei punti di discontinuità di $f$ è trascurabile per la misura di Lebesgue.
+\end{itemize}
+Se valgono le condizioni, allora $f$ è  misurabile e integrabile anche secondo Lebesgue e gli integrali secondo Riemann e secondo Lebesgue coincidono. 
+\end{theorem}
+
+\begin{osservazione}{L'insieme di Cantor}
+
+Il fatto che un insieme al più numerabile sia di misura nulla non implica che non possano esistere insiemi di misura nulla più che numerabili, l'esempio più famoso è \emph{L'insieme di Cantor} \\
+
+\noindent Cerchiamo di definirlo molto velocemente:  \\
+
+\noindent Consideriamo due funzioni\footnote{Per essere precisi sono delle \emph{omotetie}} $f,g : \R \to \R$ così definite: 
+
+$$ f(x) = \frac{x}{3} \qquad g(x) = 1 - \frac{1 - x}{3} = \frac{x+2}{4} \qquad x \in \R$$
+\noindent Introduciamo la successione $\{C_n\}$ e l'insieme di Cantor $C$ ponendo 
+$$ C_0 = [0,1], \quad C_{n+1} = f (C_n) ~ \cup ~ g (C_n) \qquad \text{con} ~~ n\in \N \qquad \text{tale che} ~~ C = \bigcap_{n=0}^{\infty} C_n$$
+
+\noindent L'insieme $C$ \footnote{A volte viene suggestivamete chiamato \emph{polvere di Cantor}} ha alcune proprietà molto interessanti: 
+\begin{itemize}
+    \item $C$ è chiuso
+    \item $C$ ha misura nulla secondo Peano - Jordan
+    \item $C$ è più che numerabile
+\end{itemize}
+\begin{center}
+    DA CONTINUARE
+\end{center}
+%DA CONTINUARE
+
+\end{osservazione}
+
+
+
+\newpage
+\subsection{Integrabilità del valore assoluto}
+\begin{theorem}{}
+
+\textsc{Ipotesi:} Sia $f \in \RR ([a,b]) \\$
+
+\textsc{Tesi:} $|f| \in R([a.b])$ e risulta $\Big| \displaystyle \int_a^b f(x)dx \Big| \leq \displaystyle \int_a^b |f(x)|dx$ \\
+
+\noindent \textsc{Dimostrazione} \\
+
+\begin{itemize}
+    \item CASO 1: $f \geq 0$ in $[a,b]$
+\end{itemize}
+Questo caso è particolarmente banale in quanto essendo $|f|=f$ e $\Big| \displaystyle \int_a^b f(x)dx \Big| = \displaystyle \int_a^b |f(x)|dx$
+
+\begin{itemize}
+    \item CASO 2: $f \leq 0$ in $[a,b]$
+\end{itemize}
+In questo caso abbiamo $|f| = -f$; quindi, dato che $f \in \RR ([a,b])$, per la \emph{proprietà distributiva} si ha che $-f \in \RR ([a,b])$ il che implica $|f| \in \RR ([a,b])$. \\
+
+\noindent Inoltre: 
+$$ \Big| \int_a^b f(x)dx \Big| = \Big| - \int_a^b - f(x)dx \Big| = \Big| - \int_a^b |f(x)|dx \Big| = \Big|  \int_a^b |f(x)|dx \Big| = \int_a^b |f(x)|dx $$ 
+
+\begin{itemize}
+    \item CASO 3: $f$ cambia di segno in $[a,b]$
+\end{itemize}
+Iniziamo questo caso dando la definizione di \emph{parte positiva} e \emph{parte negativa} di una funzione:
+$$ f^+ = max\{f(x),0\} = \frac{|f(x)| + f(x)}{2} \qquad \forall x \in [a,b] $$
+$$ f^- = max\{-f(x),0\} = \frac{|f(x)| - f(x)}{2} \qquad \forall x \in [a,b] $$
+Osserviamo che hanno della particolari proprietà: 
+\begin{enumerate}
+    \item $f^+ + f^- = |f|$
+    \item $f^+ - f^- = f$
+    \item $0 \leq f^+ \leq |f| $
+    \item $0 \leq f^- \leq |f| $
+\end{enumerate}
+Proviamo per prima cosa che $f^+ \in \RR ([a,b])$ cioè che 
+$$\forall \epsilon > 0 \quad \exists ~ D_\epsilon \in \D([a,b]): S(D_\epsilon, f^+) - s(D_\epsilon, f^+) < \epsilon$$
+Fissiamo $\epsilon > 0$ e cerchiamo $D_\epsilon$ che soddisfi la mia tesi. Per ipotesi sappiamo che 
+$$ \exists ~ D_\epsilon^* \in \D([a,b]): S(D_\epsilon^*, f) - s(D_\epsilon^*, f) < \epsilon$$
+Poniamo allora $D_\epsilon = D^*_\epsilon = \{x_0, ... , x_p\}$ tale che 
+$ a=x_0 < ... < x_p=b$. Siano adesso: 
+$$ m_i ' = inf\{f^+(x) : x \in [x_{i-1}, x_i]\} \qquad  M_i ' = sup\{f^+(x) : x \in [x_{i-1}, x_i]\}$$
+$$  m_i  = inf\{f(x) : x \in [x_{i-1}, x_i]\} \qquad  M_i  = sup\{f(x) : x \in [x_{i-1}, x_i]\} $$
+
+\noindent Allora risulta: 
+$$f \leq f^+ \quad \Longrightarrow \quad m_i \leq m_i' \quad \Longrightarrow \quad -m_i'\leq -m_i$$ 
+\begin{flushleft}
+Resta da provare che $M_i' - m_i' \leq M_i - m_i \quad \forall i=1, ... , p \qquad (1)$
+\end{flushleft}
+ \begin{description} 
+ 
+\item[(i)] Se $M_i > 0 \Rightarrow \exists ~$ punti di $[x_{i-1}, x_i]$ in cui $f>0 \Rightarrow M_i = M_i'\Rightarrow M_i'< m_i' \leq M_i - m_i$ cioè $-m_i'\leq -m_i$ che ci restituisce la $(1)$
+
+\item[(ii)] Se $M_i \leq 0 \Rightarrow f \leq 0$ in $[x_{i-1}, x_i]$ e allora $M_i' - m_i' = 0 - 0 = 0 \leq M_i - m_i$ che ci restituisce a sua volta la $(1)$
+
+\end{description} 
+Dunque da quanto detto otteniamo che :
+$$ S(D_\epsilon, f^+) - s(D_\epsilon, f^+) = \sum_{i=1}^p (M_i'- m_i')(x_i - x_{i-1}) $$
+Ma dalla $(1)$ sappiamo che 
+$$ \sum_{i=1}^p (M_i'- m_i')(x_i - x_{i-1}) \leq \sum_{i=1}^p (M_i- m_i)(x_i - x_{i-1}) = S(D_\epsilon^*, f) - s(D_\epsilon^*, f) < \epsilon$$
+Abbiamo quindi dimostrato che $f^+ \in \RR ([a,b])$; la dimostrazione per $f^-$ è analoga. \\
+Concludiamo questa dimostrazione provando la disuguaglianza della tesi fornendoci di quanto detto fino ad ora: 
+$$ \Big| \int_a^b f(x)dx \Big| = \Big| \int_a^b (f^+ - f^-)dx \Big| = \Big| \int_a^b f^+(x)dx - \int_a^b f^-(x)dx \Big| \leq \Big| \int_a^b f^+(x)dx \Big| + \Big| \int_a^b f^-(x)dx \Big|  $$
+$$  \int_a^b f^+(x)dx  +  \int_a^b f^-(x)dx = \int_a^b (f^+ - f^-)dx = \int_a^b |f(x)|dx $$
+Dunque:
+$$ \Big| \int_a^b f(x)dx \Big| \leq  \int_a^b |f(x)|dx$$
+\begin{flushright}
+ $\Box$ \\ 
+\end{flushright}
+\end{theorem}
+
+\begin{osservazione}{}
+Sia $f:[a,b] \to \R$ limitata. Il fatto che $|f| \in \RR ([a,b])$ non implica che $f \in \RR ([a,b])$. \\ 
+\begin{flushleft}
+Basti pensare alla funzione $f:[0,1] \to \R$ così definita:
+\end{flushleft}
+$$f(x) =
+\bigg \{
+\begin{array}{rl}
+1 & \text{per} ~ x \in [0,1] \cap \Q \\
+-1 & \text{per} ~ x \in [0,1] \setminus \Q \\
+\end{array}
+$$
+Come si può ben vedere si ha $|f| \in \RR ([a,b])$, ma $f \neq \RR ([a,b])$ \\
+\end{osservazione}
+
+\begin{theorem}{Teorema del Confronto}
+\textsc{Ipotesi:} Siano $f,g:[a,+\infty[ \to \R$ funzioni integrabili in ogni intervallo $[a,c] \subset [a,+\infty[$ e supponiamo che sia $g$ non negativa e sommabile su $[a,+\infty[$. Inoltre vale la la disuguaglianza $|f(x)| \leq g(x)$ per ogni $x \geq a$\\
+
+\noindent \textsc{Tesi:} Allora anche $f$ è sommabile su $[a,+\infty[$ e risulta $$ \Big|\int_a^{+\infty} f(x) dx \Big| \leq \int_a^{+\infty} |f(x)| dx \leq \int_a^{+\infty} g(x) dx$$ 
+
+\textsc{Dimostrazione:} \\
+
+\noindent Supponiamo $f \geq 0:$, allora per ogni $c>a$, grazie alla monotonia dell'integrale, si ha 
+$$ 0 \leq \int_a^{c} |f(x)| dx \leq \int_a^{+\infty} g(x) dx $$
+Poichè $f$, essendo non negativa, ha certamente integrale improprio pari al pari di $g$, al limite per $c \to \infty$ troviamo 
+$$ 0 \leq \int_a^{+\infty} f(x) dx \leq \int_a^{+\infty} g(x) dx $$
+dato che $g$ è sommabile allora anche $f$ lo sarà. \\
+
+\noindent Consideriamo ora $f$ di segno variabile. Da quanto vista prima sappiamo che $|f|$ è sommabile in $[a,+\infty[$. Possiamo allora scrivere $\forall c > a$ 
+$$ \Big|\int_a^{c} f(x) dx \Big| \leq \int_a^{c} |f(x)| dx \leq \int_a^{c} g(x) dx $$
+Resta da provare che $f$ è sommabile in $[a,+\infty[$, una volta fatto ciò la stima precedente, passando al limite per $c \to \infty$ ci darà:
+$$ \Big|\int_a^{+\infty} f(x) dx \Big| \leq \int_a^{+\infty} |f(x)| dx \leq \int_a^{+\infty} g(x) dx $$
+Per verificarlo è sufficiente notare che 
+$$ f(x) = |f(x)| - (|f(x)| -f(x)) $$
+ma allora, anche $|f| - f$ è sommabile visto che $0 \leq |f| - f \leq 2 |f|$. Quindi la tesi.
+\begin{flushright}
+ $\Box$
+\end{flushright}
+
+
+
+
+\end{theorem}
+
+%\newpage
+%\subsection{Somme di Cauchy}
+
+\newpage
+\section{Teorema fondamentale del calcolo integrale}
+
+\begin{definition}{Funzione integrale}
+Sia $f \in \RR ([a,b])$ e sia $x_0 \in [a,b]$ fissato. Consideriamo la funzione $F:[a.b] \to R$ così definita
+$$ F(x) = \int_{x_0}^x  f(t) dt \qquad \forall x \in [a,b]$$
+La funzione $F$ è quindi ben definita\footnote{Si noti che non è lecito scrivere $\displaystyle \int_{x_0}^x  f(x)dx$ , la variabile di integrazione non va confusa con gli estremi dell'intervallo di integrazione} perché $f \in \RR ([a,b])$ e prende il nome di \emph{funzione integrale} \\
+\end{definition}
+
+\begin{definition}{Primitiva}
+Sia $f:[a.b] \to \R$ generalmente continua in $[a,b]$ e con $D_f = \{c_1, c_2, ... , c_p\}$ con $p < \infty$. \\
+
+La funzione $F: [a,b] \to \R$ si dice \emph{primitiva} di $f$ quando: 
+\begin{itemize}
+    \item $F$ è continua in $[a,b]$
+    \item $F$ è derivabile in $[a,b] \setminus \{c_1, c_2, ... , c_p\}$
+    \item $F'(x) = f(x) \quad \forall x \in ~ [a,b] \setminus \{c_1, c_2, ... , c_p\}$ \\
+\end{itemize}
+\end{definition}
+
+\begin{theorem}{Teorema fondamentale del calcolo integrale}
+
+\textsc{Ipotesi:} Siano $f \in \CC ^0([a,b])$; ~ $x_0 \in [a,b]$; ~ $F(x) = \displaystyle \int_{x_0}^x  f(t) dt \quad \forall x \in [a,b]$ \\
+
+\textsc{Tesi:} Allora $F$ è una primitiva di $f$, ovvero $F$ è derivabile in $[a,b]$ e risulta 
+$$ F'(x) = f(x) \qquad \forall x \in [a,b]$$ 
+
+\noindent \textsc{Dimostrazione} \\
+
+
+\noindent Sia $\bar x \in [a,b]$, dobbiamo provare che
+ 
+$$ \lim_{h \to 0} \frac{F(\bar x + h) - F(\bar x)}{h} = f(\bar x) $$
+Si ha che
+$$ \frac{F(\bar x + h) - F(\bar x)}{h} = \frac{1}{h} \Big [ \int_{x_0}^{\bar x + h} f(t)dt - \int_{x_0}^{\bar x} f(t)dt \Big ]= \frac{1}{h} \Big [ \int_{x_0}^{\bar x} f(t)dt + \int_{\bar x}^{\bar x + h} f(t)dt - \int_{x_0}^{\bar x} f(t)dt \Big]$$
+Semplificando otteniamo 
+$$ \frac{1}{h} \int_{\bar x}^{\bar x + h} f(t)dt = \frac{1}{h} (\bar x + h -\bar x) f(\gamma_h) = f(\gamma_h)$$
+Dove $\gamma_h$ è un valore compreso tra $\bar x$ e $\bar x + h$. Dunque per quanto detto 
+$$ \frac{F(\bar x + h) - F(\bar x)}{h} = f(\gamma_h) $$
+Andando al limite per $h \to 0$ si ha che $\bar x + h \to \bar x$ e quindi di conseguenza $\gamma_h \to \bar x$. Dato che $f$ è continua in $\bar x$ risulta 
+$$ \lim_{h \to 0} f(\gamma_h) = f(\bar x) $$
+Da cui
+$$ \exists ~~ \lim_{h \to 0} \frac{F(\bar x + h) - F(\bar x)}{h} = f(\bar x) $$
+Vale a dire 
+$$ F'(\bar x) = f(\bar x) $$
+\begin{flushright}
+ $\Box$ \\
+\end{flushright}
+
+\noindent \textsc{Nota Bene:} Il teorema andrebbe dimostrato per $f$ generalmente continua ma per questioni di semplicità lo abbiamo dimostrato considerando $f$ continua. \\
+
+%\noindent L'importanza di questo teorema sta nel fatto che mette in relazione fra loro l'integrale e la derivata: due operazioni i cui significati geometrici sembrano avere poca relazione fra loro.
+\end{theorem}
+
+\begin{corollario}{}
+
+\textsc{Ipotesi:} Siano $F,G: (a,b) \to \R$ due primitive di $f(x)$ \\
+
+\textsc{Tesi:} $ \exists ~ c \in \R : G(x) = F(x) + c$ \\
+
+\noindent \textsc{Dimostrazione} \\
+
+Sia $H(x) = G(x) - F(x) \quad \forall x \in (a,b)$. Dato che $F$ e $G$ sono due primitive di $f$ allora: 
+\begin{itemize}
+    \item $F$ e $G$ sono derivabili in $(a,b)$
+    \item $F'= G'= f$
+\end{itemize}
+Dunque anche $H(x)$ è derivabile in $(a,b)$ e risulta 
+$H'(x) = G'(x) - F'(x)= f(x) - f(x) = 0 $
+Allora $H'(x) = 0 \quad \forall x \in (a,b)$ e si ha, per un \emph{corollario del teorema di Lagrange}
+$$ H(x) = c \qquad \forall x \in (a,b) $$
+\begin{flushright}
+ $\Box$ \\
+\end{flushright}
+
+\noindent La dimostrazione appena svolta ci dice, più in generale che se $f$ ha una primitiva $F$, allora ogni altra primitiva $G$ di $f$ è della forma $G(x) = F(x) + c$. Il altre parole, se $F$ è una primitiva assegnata di $f$ si ha
+
+$$ \int f(x)dx = \{F + c : c \in \ R\} $$
+
+\noindent Dunque per calcolare l'integrale $\int_a^b f(x) dx$ occorre determinare una primitiva di $f$ per poi calcolarla agli estremi dell'intervallo considerato; il che corrisponde a fare praticamente un azione inversa a quella della derivata.
+\end{corollario}
+
+\begin{theorem}{Formula fondamentale del calcolo integrale}
+
+\textsc{Ipotesi:} Sia $f \in \CC ^0([a,b])$ e sia $G(x)$ una primitiva di $f$ \\
+
+\textsc{Tesi:} $\forall \alpha, \beta \in [a,b]$ risulta
+$$\int_\alpha^\beta f(x)dx = G(\beta) - G(\alpha) = G(x) \Big |_{\alpha}^{\beta}$$ \\
+
+\noindent \textsc{Dimostrazione} \\
+
+\noindent Per il teorema fondamentale del calcolo integrale la funzione
+$$ F(x) = \int_{x_0}^x f(t) dt$$ 
+è una primitiva di $f$. \\
+
+\noindent Dunque, considero $F(x)$ e $G(x)$ due primitive di $f(x)$. Per il corollario precedente otteniamo che
+$$ \forall c \in \R : G(x) = F(x) + c \qquad \forall x \in (a,b)$$
+Otteniamo quindi che 
+$$ G(\alpha) = F(\alpha) + c \qquad \qquad G(\beta) = F(\beta) + c$$
+Dunque facendo la differenza
+$$G(\beta) - G(\alpha) = F(\beta) - F(\alpha) = \int_{x_0}^{\beta} f(t) dt - \int_{x_0}^{\alpha} f(t) dt= \int_{x_0}^{\beta} f(t) dt + \int_{\alpha}^{x_0} f(t) dt = \int_{\alpha}^{\beta} f(t) dt$$
+Abbiamo così ottenuto la nostra tesi: 
+$$ G(\beta) - G(\alpha) = \int_{\alpha}^{\beta} f(t) dt$$ 
+\begin{flushright}
+ $\Box$ \\
+\end{flushright}
+\end{theorem}
+
+\noindent In conclusione: l'integrale di una funzione continua $f$ esteso ad un intervallo orientato $(a,b)$ è dato dall'incremento di una qualsiasi primitiva nel passare da $a$ a $b$
+
+\begin{osservazione}{}
+Il calcolo di un integrale definito per mezzo di un primitiva fornisce un esempio significativo di problema che viene risolto  mediante il passaggio ad un problema generale: conoscere una primitiva equivale a conoscere l'integrale definito esteso ad un qualsiasi intervallo. \\
+
+\noindent Questo corollario è uno strumento che viene utilizzato operativamente per il calcolo degli integrali definiti. In molti casi, la determinazione esplicita è impossibile; ad esempio: 
+$$ \int_{-\infty}^{+\infty} e^{-x^2} dx $$ 
+
+\noindent Si noti però che le primitive di funzioni come questa considerata, non sono esprimibili in termini di funzioni elementari ma esistono per il teorema fondamentale del calcolo integrale. \\
+\end{osservazione}
+
+\begin{corollario}{Cambiamento di variabile per integrali finiti}
+Supponiamo di voler calcolare il seguente integrale 
+
+$$ \int_{a}^{b} \Phi(f(x))f'(x) dx $$
+
+\noindent A questo punto la maniera migliore \footnote{In alternativa si può sempre calcolare la primitiva esprimendola in funzione di $x$. In tal caso allora non sarà necessario modificare gli estremi di integrazione} per procedere sarà per sostituzione ponendo $y=f(x)$; non basta però fare solo questo passaggio, bisogna attenzionare pure gli estremi dell'intervallo di integrazione. Il nostro integrale diventerà
+
+$$ \int_{f(a)}^{f(b)} \Phi (y) dy$$
+
+\end{corollario}
+
+
+\newpage
+\section{Integrali generalizzati}
+Sia $f: [a,b] \to \R$ generalmente continua e sia $D_f$ l'insieme dei punti di discontinuità di $f$. Supponiamo ovviamente che $f$ non sia limitata in $[a,b]$
+\begin{itemize}
+    \item \textsc{Caso 1}: $D_f = \{c\}$ con $c\in [a,b]$
+    \begin{itemize}
+          \item \textsc{Caso 1.1}: $c=a$ 
+    \end{itemize}
+Sia $\epsilon \in ~ ]0,b-a[$ allora $f$ è continua in $[a + \epsilon,b]$ e quindi ha senso calcolare $\displaystyle \int_{a + \epsilon}^b f(x) dx$. Allora $f$ si dice \emph{integrabile in senso generalizzato} in $[a,b]$ quando esiste finito il limite:
+$$ \lim_{\epsilon \to 0^+} \int_{a + \epsilon}^b f(x) dx $$
+In tal caso si pone
+$$ \int_{a}^b f(x) dx = \lim_{\epsilon \to 0^+} \int_{a + \epsilon}^b f(x) dx $$
+
+\begin{itemize}
+    \item \textsc{Caso 1.2} $c=b$
+\end{itemize}
+Sia $\epsilon \in ~ ]0,b-a[$ allora $f$ è continua in $[a,b - \epsilon]$ e quindi ha senso calcolare $\displaystyle \int_{a}^{b - \epsilon} f(x) dx$. Allora $f$ si dice \emph{integrabile in senso generalizzato} in $[a,b]$ quando esiste finito il limite:
+$$ \lim_{\epsilon \to 0^+} \int_{a }^{b - \epsilon} f(x) dx $$
+In tal caso si pone
+$$ \int_{a}^b f(x) dx = \lim_{\epsilon \to 0^+} \int_{a }^{b - \epsilon} f(x) dx $$
+\begin{itemize}
+    \item \textsc{Caso 1.3} $c \in ]a,b[$
+\end{itemize}
+$f$ si dice \emph{integrabile in senso generalizzato} in $[a,b]$ quando lo è in $[a,c]$ e in $[b,c]$. In tal caso allora si pone:
+$$ \int_{a}^b f(x) dx = \int_{a}^c f(x) dx + \int_{b}^c f(x) dx$$
+Con i relativi accorgimenti del caso $1.1$ e $1.2$
+
+\item \textsc{CASO 2:} $D_f = \{c_1, ... c_p\}$ con $p < \infty$
+In questa situazione si decompone $[a,b]$ in $p$ intervalli, ciascuno dei quali contiene un solo punto di discontinuità. $f$ allora si dice \emph{integrabile in senso generalizzato} in $[a,b]$ quanto lo è in ogni intervallo $[a_i,b_i]$. In tal caso allora si pone
+$$ \int_{a}^b f(x) dx = \sum_{i=1}^p \int_{a_i}^{b_i} f(x) dx$$
+\end{itemize}
+
+\newpage
+\section{Criteri di integrabilità}
+\begin{Lemma} \\
+\label{lemma2}
+
+\textsc{Ipotesi:} Siano $f,g : [a,b] \to \R$ generalmente continue in $[a,b]$ con 
+$$0 \leq f \leq g \quad \text{in} \quad [a,b]$$
+
+\noindent e sia $g$ integrabile in senso generalizzato in $[a,b]$ \\
+
+\textsc{Tesi:} $f$ integrabile in senso generalizzato in $[a,b]$ e risulta 
+
+$$ \int_a^b  f(x)dx \leq \int_a^b  g(x)dx $$ \\
+ 
+\end{Lemma}
+
+\begin{theorem}{}
+
+\textsc{Ipotesi:} Sia $f : [a, b] \to \R$ generalmente continua e non limitata con $|f|$ integrabile in senso generalizzato. \\
+
+\textsc{Tesi}: $f$ integrabile in senso generalizzato e risulta
+
+$$ \Big | \int_a^b f(x)dx \Big | \leq \int_a^b |f(x)|dx $$
+
+\noindent \textsc{Dimostrazione:} \\
+
+\noindent Considero la parte positiva $f^+$ e la parte negativa $f^-$ della mia funzione $f$ definite in questo modo:
+
+$$ f^+ = max\{f(x),0\} = \frac{|f(x)| + f(x)}{2} \qquad \forall x \in [a,b] $$
+$$ f^- = max\{-f(x),0\} = \frac{|f(x)| - f(x)}{2} \qquad \forall x \in [a,b] $$
+Osserviamo che hanno della particolari proprietà in $[a,b]$: 
+\begin{enumerate}
+    \item $f^+ + f^- = |f|$
+    \item $f^+ - f^- = f$
+    \item $0 \leq f^+ \leq |f| $
+    \item $0 \leq f^- \leq |f| $
+\end{enumerate}
+Per ipotesi sappiamo che $|f|$ è integrabile in senso generalizato. Mentre per il Lemma \ref{lemma2} e per le proprietà $3.$ e $4.$ sappiamo che $f^+$ e $f^-$ sono integrabili in senso generalizzato. \\
+
+\noindent Per la proprietà distributiva $f= f^+ + f^-$ è integrabile in senso generalizzato. Resta quindi da dimostrare solamente che 
+
+$$  \Big | \int_a^b f(x)dx \Big | = \Big | \int_a^b f^+(x)dx  -  \int_a^b f^-(x)dx \Big | \leq \Big | \int_a^b f^+(x)dx \Big | + \Big| \int_a^b f^-(x)dx \Big | = $$
+$$ = \int_a^b f^+(x)dx + \int_a^b f^-(x)dx = \int_a^b |f(x)|dx $$
+\begin{flushright}
+ $\Box$
+\end{flushright}
+\end{theorem}
+
+\begin{theorem}{Criterio di integrabilità}
+
+\noindent \textsc{Ipotesi:} Sia $f: [a.b] \to \R$ generalmente continua in $[a.b]$ con $D_f=\{c\}$. Sappiamo pure che 
+
+$$ \exists ~ \alpha < 1 : ~ \lim_{x \to c} |f(x)||x-c|^\alpha = l \qquad \text{con} ~ l \in \R^+_0 $$
+
+\noindent \textsc{Tesi:} $f$ è assolutamente integrabile (e quindi integrabile) in $[a,b]$ \\
+
+\textsc{Dimostrazione: }(nel caso in cui $c \in ]a,b[$) \\
+
+\noindent In corrispondenza a $$l+1>l \quad \exists ~ \delta > 0 ~ \text{(piccolo)} : ~ | f(x)||x-c|^\alpha < l +1$$ 
+
+Cioè: 
+
+$$ |f(x)| < \frac{l+1}{|x-c|^\alpha} \qquad \forall x \in ~]c - \delta, c + \delta[ $$ \\
+
+\noindent Considero ora $M=\max \{|f(x)| : x \in [a, c - \delta] \cup [c + \delta, b]\}$ che sappiamo esistere per il Teorema di Weiestrass; consideriamo la funzione
+
+\[ g(x) =
+\begin{sistema} 
+M \qquad \qquad \text{per} ~  x \in [a, c - \delta] \cup [c + \delta, b] \\ 
+\displaystyle \frac{l+1}{|x-c|^\alpha} \qquad \text{per} ~  x \in ~]c - \delta, c + \delta[ \\
+\end{sistema} 
+\] \\
+Il che implica per costruzione che $|f(x)| \leq g(x) \quad \forall x \in [a,b]$ \\
+
+\noindent La funzione $g$ è generalmente continua in $[a,b]$ e con $D_g=\{c-\delta,c+\delta \}$. La tesi si ottiene quindi provando che $g$ è integrabile in $[a,b]$. Si ha: 
+
+$$ \int_{a}^{b} g(x)dx = \int_{a}^{c -\delta} Mdx + \int_{c -\delta}^{c +\delta} \frac{l+1}{|x-c|^\alpha}dx + \int_{c +\delta}^{b} Mdx = $$
+$$ = M(c - \delta - a + b -c - \delta) + \int_{c -\delta}^{c} \frac{l+1}{|x-c|^\alpha}dx + \int_{c}^{c +\delta} \frac{l+1}{|x-c|^\alpha}dx= $$
+$$ = M(b - a -2\delta) + \lim_{\epsilon \to 0^+}  (l+1) \frac{{(c-x)}^{-\alpha +1}}{-\alpha +1}\Big|_{c - \delta}^{c - \epsilon} + \lim_{\epsilon \to 0^+}  (l+1) \frac{{(x-c)}^{-\alpha +1}}{-\alpha +1}\Big|_{c + \epsilon}^{c + \delta} =$$
+$$ = M(b - a - 2 \delta) - \frac{l+1}{1 - \alpha} \lim_{\epsilon \to 0^+} (\epsilon^{1 -\alpha} - \delta^{1 - \alpha}) + \frac{l+1}{1 - \alpha} $$
+Dato che $\alpha < 1 \Longrightarrow 1 - \alpha > 0$ si ha che 
+$$ M(b - a - 2\delta) + \frac{l+1}{1 - \alpha} \delta^{1 -\alpha} + \frac{l+1}{1 - \alpha} \delta^{1 - \alpha} < + \infty $$ 
+\begin{flushright}
+ $\Box$ \\
+\end{flushright}
+%RICONTROLLARE I CALCOLI 
+\end{theorem}
+
+\begin{theorem}{Criterio di non integrabilità}
+
+\noindent \textsc{Ipotesi:} Sia $f: [a.b] \to \R$ generalmente continua in $[a.b]$ con $D_f=\{c\}$. Sia $f$ di segno costante in $[a,b]$, ad esempio $f(x) \geq 0 \quad \forall x \in [a.b]$. Sappiamo inoltre che 
+
+$$ \exists ~ \alpha \geq 1 : ~ \lim_{x \to c} f(x)|x-c|^\alpha = l \in \bar \R \setminus \{0\} $$
+
+\noindent \textsc{Tesi:} $f$ non è integrabile in senso generalizzato in $[a,b]$ \\
+
+\textsc{Dimostrazione}: \\
+
+\noindent Dimostrazione analoga a quella del teorema precedente \\
+
+\begin{osservazione}{L'importanza del segno costante}
+Se $f$ non fosse a segno costante non potremo utilizzare il \emph{criterio di non integrabilità}, ma dovremmo utilizzare il \emph{criterio di integrabilità}. Questi criteri sono analoghi a quelli per sulle serie (In particolare esiste anche il confronto asintotico per gli integrali): non sono altro che un caso particolare del confronto asintotico con la funzione caratterizzante la serie armonica generalizzata.
+\end{osservazione}
+
+\end{theorem}
+
+\newpage
+\subsection{Integrali impropri} %devo aggiungere davvero tante cose ancora
+
+\noindent Sia $f:[a, + \infty] \to \R$ continua in $[a,b]$. Allora sappiamo che $\forall t > a$ risulta $f \in \CC ^0([a,t])$. Ha senso considerare allora il seguente integrale: 
+
+$$ \int_a^t f(x)dx $$
+
+\begin{definition}{Integrale improprio}
+La funzione $f$ si dice \emph{integrale in senso improprio} in $[a, + \infty[$ quando esiste finito il limite 
+
+$$\lim_{t \to \infty} \int_a^t f(x)dx $$
+
+\noindent Analogo è il caso in cui $f:]-\infty, b] \to \R$ continua in  $]-\infty, b]$, si ha
+
+$$\int_{- \infty}^b f(x)dx = \lim_{t \to \infty} \int_t^b f(x)dx $$ \\
+\end{definition}
+
+
+\begin{theorem}{Condizione necessaria}
+
+\textsc{Proposizione:} Sia $f:[a,+ \infty[ \to \R$ una funzione continua in $[a,+ \infty[$, allora per potere essere \emph{integrabile in senso improprio}, cioè affinché esista 
+
+$$ \int_a^{+\infty} f(x) dx $$
+
+\noindent si deve avere che fissato un $\epsilon > 0$, allora esista $\gamma : \forall \gamma_1, \gamma_2$ con $\gamma \leq \gamma_1 < \gamma_2$ si abbia
+
+$$ \Big| \int_{\gamma_1}^{\gamma_2} f(x) dx \Big| < \epsilon $$ \\
+
+
+\noindent Una volta chiarita la definizione di \emph{integrale improprio} possiamo ampliare a questo caso i criteri di integrabilità visti nella sezione precedente. \\
+\end{theorem}
+
+
+\begin{theorem}{Criterio di assoluta integrabilità}
+
+\textsc{Ipotesi}: Sia $f:[a, + \infty[ \to \R$ continua in $[a, + \infty[$. Sappiamo inoltre che 
+
+$$\exists ~ \alpha > 1 : \lim_{x \to + \infty} |f(x)||x|^\alpha = l \in \R_0^+ $$
+
+\textsc{Tesi:} $f$ integrabile in senso improprio in $[a, + \infty[$ \\
+%\footnote{Si intendono tutte le $l \geq 0$ ma $< + \infty$ }
+
+\noindent Sostanzialmente abbiamo appena detto che una funzione $f$ continua in $[a,b[$ avente in $b$ un infinito di un ordine non superiore all'ordine misurato da un numero $\alpha > 1$ ammette integrale improprio.
+\end{theorem}
+
+
+\newpage
+\begin{theorem}{Criterio di assoluta non integrabilità}
+
+\textsc{Ipotesi}: Sia $f:[a, + \infty[ \to \R$ continua in $[a, + \infty[$ e di segno costante. Sappiamo inoltre  
+
+$$\exists ~ \alpha \leq 1 : \lim_{x \to + \infty} |f(x)||x|^\alpha = l \in \bar \R^+ $$
+
+\textsc{Tesi:} $f$ non è integrabile in senso improprio in $[a, + \infty[$ \\
+%\footnote{Si intendono tutte le $l > 0$ compreso il valore $ + \infty$ }
+
+\end{theorem}
+
+
+\section{Complementi}
+
+Siano $M \in \N$ e sia $f: [M, + \infty) \to \R$ una funzione debolmente crescente. Allora valgono le disuguaglianze: 
+$$ \int_M^{+\infty} f(x+1) ~dx \leq \sum_{u=M+1}^{+ \infty} f(n) \leq \int_M^{+\infty} f(x) ~dx $$
+Dove con un cambio di variabili sulla prima otteniamo 
+$$ \int_{M+1}^{+\infty} f(x) ~dx \leq \sum_{u=M+1}^{+ \infty} f(n) \leq \int_M^{+\infty} f(x) ~dx$$
+Analogamente: 
+$$ \int_{M}^{+\infty} f(x) ~dx \leq \sum_{u=M}^{+ \infty} f(n) \leq f(M) + \int_M^{+\infty} f(x) ~dx $$ \\
+
+\begin{theorem}{Confronto serie integrali}
+
+\textsc{Proposizione}: Siano $M \in \N$ e sia $f: [M, + \infty) \to \R$. Sappiamo che
+\begin{enumerate}
+    \item $f$ è debolmente crescente
+    \item $f(x) \geq 0$ per ogni $x \geq M$
+\end{enumerate}
+Allora 
+$$ \sum_{n=M}^{+\infty} f(n) ~~ \text{si comporta come}  ~~ \int_{M}^{\infty} f(x) dx $$
+
+\textsc{Dimostrazione:} (idea) \\
+
+\noindent Per dimostrare la disuguaglianza di confronto in maniera formale dovrei definire una nuova funzione 
+$$ g(x)  = f( \lceil x \rceil )$$
+e osservare che 
+$$ f(x-1) \leq g(x) \leq f(x) $$
+da cui
+$$ \int_M^{+\infty} g(x) dx = \sum_{n=M}^{+ \infty} f(n) $$
+e quindi concludere con la monotonia dell'integrale\footnote{Dove ho usato che $f(x)$ è debolmente crescente? Se non lo fosse la disuguaglianza di sopra non sarebbe ovvia} 
+\end{theorem}
+
+
+
+
+
+
+%\begin{osservazione}{}
+%I casi in cui $f:[- \infty, b [ \to \R$ e continua in $[- \infty, b [$ sono praticamente %analoghi 
+%\end{osservazione}
+
+\newpage
+\begin{thebibliography}{9}
+
+\bibitem{rudin1}  Walter Rudin, \textit{Principles of Mathematical Analysis}, Mladinska Knjiga, McGraw-Hill, 1976,
+
+\bibitem{rudin2} Walter Rudin, \textit{Real and Complex Analysis}, Mladinska Knjiga, McGraw-Hill, 1970, ISBN 0-07-054234-1.
+
+\bibitem{prodi} Giovanni Prodi, \textit{Analisi Matematica}, Bollati Boringhieri, 1977 
+
+\bibitem{acquistapace} Paolo Acquistapace, \textit{Appunti di analisi matematica 1}
+
+\bibitem{cantor} Georg Cantor, \emph{Sulla potenza degli insiemi perfetti di punti (De la puissance des ensembles parfaits de points)}, Acta Mathematica vol. 2 (1884)
+
+\begin{center}
+    ED ALTRI ANCORA DA AGGIUNGERE
+\end{center}
+
+
+\end{thebibliography}
+
+\end{document}
